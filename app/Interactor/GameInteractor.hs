@@ -8,21 +8,19 @@ import Control.Monad.Trans.State.Lazy (execStateT)
 import Control.Monad.Trans.Class (MonadTrans(lift))
 import Data.GameState(GameState(..), WordDiff(..), GameStatus(..), IncorrectStatus(..))
 import Util.WordUtil(isCorrectWord, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove)
-import Data.Either
 import Parser.GameMenuCommandParser(parse)
 import Data.GameMenuCommand (Command(..))
 import Printer.GameMenuPrinter (printHelp, printWelcomeMessage, printWordDiff, printGameResult, printHUD)
 import GameProcessor (calculateDiff)
-import Debug.Trace (trace)
+import WordGenerator (genGuessWord)
 
-genWord :: String
-genWord = "pidor"
+
 
 startGame :: IO ()
 startGame = do
     printWelcomeMessage
     printHelp
-    let word = genWord
+    word <- genGuessWord
     env <- execStateT (runMaybeT loop) (CorrectState InProgress [] word)
     printGameResult env
 

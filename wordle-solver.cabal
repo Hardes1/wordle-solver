@@ -35,6 +35,7 @@ library
       Printer.GameMenuPrinter
       Printer.MainMenuPrinter
       Util.WordUtil
+      WordGenerator
   other-modules:
       Paths_wordle_solver
   autogen-modules:
@@ -45,6 +46,7 @@ library
   build-depends:
       base >=4.7 && <5
     , containers
+    , random
     , transformers
   default-language: Haskell2010
 
@@ -62,6 +64,7 @@ executable wordle-solver-exe
   build-depends:
       base >=4.7 && <5
     , containers
+    , random
     , transformers
     , wordle-solver
   default-language: Haskell2010
@@ -79,6 +82,7 @@ test-suite wordle-solver-test
   build-depends:
       base >=4.7 && <5
     , containers
+    , random
     , transformers
     , wordle-solver
   default-language: Haskell2010
