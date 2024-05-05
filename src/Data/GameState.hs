@@ -1,5 +1,7 @@
-module Data.GameState(Color(..), GameState(..)) where
+module Data.GameState(Color(..), GameState(..), WordDiff(..)) where
 
 data Color = Green | Yellow | Red
 
-newtype GameState = GameState [(Color, Char)]
+newtype WordDiff = WordDiff [(Color, Char)]
+
+newtype GameState = GameState [WordDiff]

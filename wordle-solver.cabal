@@ -29,6 +29,7 @@ library
       Data.GameState
       Data.MainMenuCommand
       Data.WordError
+      GameProcessor
       Parser.GameMenuCommandParser
       Parser.MainMenuCommandParser
       Printer.GameMenuPrinter

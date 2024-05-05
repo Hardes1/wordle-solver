@@ -9,7 +9,8 @@ import Util.WordUtil(isCorrectWord)
 import Data.Either
 import Parser.GameMenuCommandParser(parse)
 import Data.GameMenuCommand (Command(..))
-import Printer.GameMenuPrinter (printHelp, printWelcomeMessage)
+import Printer.GameMenuPrinter (printHelp, printWelcomeMessage, printWordDiff)
+import GameProcessor (calculateDiff)
 
 startGame :: IO ()
 startGame = do
@@ -28,5 +29,7 @@ handleCommand Back = mzero
 handleCommand Help = lift . lift $ printHelp
 handleCommand (Word word) = case isCorrectWord word of
         Left err -> lift . lift $ putStrLn ("Error: " <> show err)
-        Right _ -> do
-            lift . lift $ putStrLn "Undefined"
+        Right _ -> do 
+            let diff = calculateDiff "pidor" word
+            lift . lift $ printWordDiff diff
+            return ()
