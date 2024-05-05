@@ -1,9 +1,11 @@
-module Util.WordUtil(isCorrectWord, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove) where
+module Util.WordUtil(isCorrectWord, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove, maxGuessSteps) where
 import Data.Char (isLower)
 import Data.WordError (Error(..))
 import Control.Monad (unless)
 import Data.GameState (WordDiff (WordDiff), Color (..))
 
+maxGuessSteps :: Int
+maxGuessSteps = 6
 
 isValidLength :: String -> Bool
 isValidLength word = length word == 5
@@ -21,7 +23,7 @@ isLastGuessFull (WordDiff arr:_) = all ((== Green) . fst) arr
 isLastGuessFull _ = False
 
 isNumberOfMovesExceeded :: [WordDiff] -> Bool
-isNumberOfMovesExceeded arr = length arr > 5
+isNumberOfMovesExceeded arr = length arr > maxGuessSteps
 
 isPossibleToMakeMove :: [WordDiff] -> Bool
-isPossibleToMakeMove arr = length arr < 5
+isPossibleToMakeMove arr = length arr < maxGuessSteps

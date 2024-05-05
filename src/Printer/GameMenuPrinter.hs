@@ -1,6 +1,7 @@
-module Printer.GameMenuPrinter(printHelp, printWelcomeMessage, printWordDiff, printGameResult) where
-import Data.GameState (WordDiff(..), Color (..), GameState (..))
+module Printer.GameMenuPrinter(printHelp, printWelcomeMessage, printWordDiff, printGameResult, printHUD) where
+import Data.GameState (WordDiff(..), Color (..), GameState (..), GameStatus (..),  IncorrectStatus(..))
 import Data.Foldable (traverse_)
+import Util.WordUtil (maxGuessSteps)
 
 printHelp :: IO ()
 printHelp = do
@@ -32,15 +33,16 @@ printProgress wordDiffList = do
 
 printGameResult :: GameState -> IO ()
 printGameResult env = case env of
-        Win wordDiffList word -> do 
-            putStrLn $ "You won! Correct word was " <> word
+        CorrectState status wordDiffList word -> do 
+            putStrLn $ "You " <> show status <> "! Correct word was " <> word
             printProgress $ reverse wordDiffList
             printGoingBackToMainMenu
-        Lose wordDiffList word -> do 
-            putStrLn $ "You Lost! Correct word was " <> word
-            printProgress $ reverse wordDiffList
-            printGoingBackToMainMenu 
-        Cancelled -> do 
+        IncorrectState Cancelled -> do 
             putStrLn "You cancelled the game!"
             printGoingBackToMainMenu
-        _ -> error "Illegal state. Game should be finished by this moment"
+
+printHUD :: GameState -> IO ()
+printHUD env = case env of
+     CorrectState InProgress wordDiffList _ -> do
+          putStrLn $ "Move: " <> show (length wordDiffList + 1) <> " / " <> show maxGuessSteps
+     _ -> error "Illegal state"

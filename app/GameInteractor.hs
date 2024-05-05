@@ -1,15 +1,17 @@
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Use when" #-}
 module GameInteractor(startGame) where
 import Control.Monad (MonadPlus(mzero), forever)
 import Control.Monad.Trans.State (StateT, get, modify)
 import Control.Monad.Trans.Maybe (MaybeT (runMaybeT))
 import Control.Monad.Trans.State.Lazy (execStateT)
 import Control.Monad.Trans.Class (MonadTrans(lift))
-import Data.GameState(GameState(..), WordDiff(..))
+import Data.GameState(GameState(..), WordDiff(..), GameStatus(..), IncorrectStatus(..))
 import Util.WordUtil(isCorrectWord, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove)
 import Data.Either
 import Parser.GameMenuCommandParser(parse)
 import Data.GameMenuCommand (Command(..))
-import Printer.GameMenuPrinter (printHelp, printWelcomeMessage, printWordDiff, printGameResult)
+import Printer.GameMenuPrinter (printHelp, printWelcomeMessage, printWordDiff, printGameResult, printHUD)
 import GameProcessor (calculateDiff)
 import Debug.Trace (trace)
 
@@ -21,12 +23,14 @@ startGame = do
     printWelcomeMessage
     printHelp
     let word = genWord
-    env <- execStateT (runMaybeT loop) (InProgress [] word)
+    env <- execStateT (runMaybeT loop) (CorrectState InProgress [] word)
     printGameResult env
 
 loop :: MaybeT (StateT GameState IO) ()
 loop = forever $ do
     determineGameState
+    env <- lift get
+    lift . lift $ printHUD env
     input <- lift . lift $ getLine -- add logic to finish game
     handleCommand $ parse input
 
@@ -35,17 +39,17 @@ determineGameState = do
     env <- lift get
     let (wordDiffList, guessWord) = extractDataFromEnv env
     if isLastGuessFull wordDiffList && not (isNumberOfMovesExceeded wordDiffList) then do
-        lift $ modify (const $ Win wordDiffList guessWord)
+        lift $ modify (const $ CorrectState Win wordDiffList guessWord)
         mzero
     else if not (isPossibleToMakeMove wordDiffList) then do
-        lift $ modify (const $ Lose wordDiffList guessWord)
+        lift $ modify (const $ CorrectState Lose wordDiffList guessWord)
         mzero
     else return ()
 
 
 handleCommand :: Command -> MaybeT (StateT GameState IO) ()
 handleCommand Back = do
-    lift $ modify (const Cancelled)
+    lift $ modify (\_ -> IncorrectState Cancelled)
     mzero
 handleCommand Help = lift . lift $ printHelp
 handleCommand (Word input) = do
@@ -56,11 +60,11 @@ handleCommand (Word input) = do
         Right _ -> do
             let diff = calculateDiff guessWord input
             lift . lift $ printWordDiff diff
-            lift $ modify (const $ InProgress (diff:wordDiffList) guessWord)
+            lift $ modify (const $ CorrectState InProgress (diff:wordDiffList) guessWord)
             return ()
 
 
 extractDataFromEnv :: GameState -> ([WordDiff], String)
 extractDataFromEnv state = case state of 
-    InProgress wordDiffList guessWord -> (wordDiffList, guessWord)
+    CorrectState InProgress wordDiffList guessWord -> (wordDiffList, guessWord)
     _ -> error "Illegal state exception. Trying to extract from inconsistent data"
