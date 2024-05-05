@@ -3,7 +3,6 @@ import Data.GameState (WordDiff(..), Color (..))
 import qualified Data.Map.Strict as Map(Map, fromListWith)
 import Control.Monad.Trans.State (State, evalState, get, modify)
 import Data.Map.Strict (adjust, (!?))
-import Debug.Trace (trace)
 
 calculateDiff :: String -> String -> WordDiff
 calculateDiff expected actual =
@@ -28,3 +27,4 @@ isContainsAtLeastOneLetter :: Map.Map Char Int -> Char -> Bool
 isContainsAtLeastOneLetter dict chr = case dict !? chr of
     Nothing -> False
     Just val -> val > 0
+

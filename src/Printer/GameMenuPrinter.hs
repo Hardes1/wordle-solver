@@ -1,5 +1,5 @@
-module Printer.GameMenuPrinter(printHelp, printWelcomeMessage, printWordDiff) where
-import Data.GameState (WordDiff(..), Color (..))
+module Printer.GameMenuPrinter(printHelp, printWelcomeMessage, printWordDiff, printGameResult) where
+import Data.GameState (WordDiff(..), Color (..), GameState (..))
 import Data.Foldable (traverse_)
 
 printHelp :: IO ()
@@ -18,3 +18,29 @@ printWordDiff (WordDiff arr) = do
           Yellow -> putStr $ "\ESC[33m" <> [chr] <> "\ESC[0m"
           Red -> putStr $ "\ESC[31m" <> [chr] <> "\ESC[0m") arr
      putStrLn []
+
+printWordDiffList :: [WordDiff] -> IO ()
+printWordDiffList = traverse_ printWordDiff 
+
+printGoingBackToMainMenu :: IO ()
+printGoingBackToMainMenu = putStrLn "Going back to main menu..."
+
+printProgress :: [WordDiff] -> IO ()
+printProgress wordDiffList = do
+     putStrLn "Your guesses: "
+     printWordDiffList wordDiffList
+
+printGameResult :: GameState -> IO ()
+printGameResult env = case env of
+        Win wordDiffList word -> do 
+            putStrLn $ "You won! Correct word was " <> word
+            printProgress $ reverse wordDiffList
+            printGoingBackToMainMenu
+        Lose wordDiffList word -> do 
+            putStrLn $ "You Lost! Correct word was " <> word
+            printProgress $ reverse wordDiffList
+            printGoingBackToMainMenu 
+        Cancelled -> do 
+            putStrLn "You cancelled the game!"
+            printGoingBackToMainMenu
+        _ -> error "Illegal state. Game should be finished by this moment"
