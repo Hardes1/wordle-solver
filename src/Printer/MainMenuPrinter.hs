@@ -1,4 +1,4 @@
-module ConsolePrintUtil(printWelcomeMessage, printHelp, printExit) where
+module Printer.MainMenuPrinter(printWelcomeMessage, printHelp, printExit) where
 
 printWelcomeMessage :: IO ()
 printWelcomeMessage = putStrLn "Welcome to the wordle-solver!"

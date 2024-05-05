@@ -1,11 +1,12 @@
 module MainMenuInteractor(run) where
 
-import ConsolePrintUtil(printWelcomeMessage, printHelp, printExit)
+import Printer.MainMenuPrinter(printWelcomeMessage, printHelp, printExit)
 import Control.Monad.Trans.Maybe (MaybeT (runMaybeT))
 import Control.Monad.Trans.Class (lift)
 import Control.Monad (forever, MonadPlus (mzero))
-import Data.Command (MainMenuCommand (..))
-import Parser.CommandParser(parseMainMenuCommand)
+import Data.MainMenuCommand (MainMenuCommand (..))
+import GameInteractor(startGame)
+import Parser.MainMenuCommandParser(parse)
 
 run :: IO ()
 run = do
@@ -16,12 +17,12 @@ run = do
 loop :: MaybeT IO ()
 loop = forever $ do
     input <- lift getLine
-    case parseMainMenuCommand input of 
+    case parse input of 
         Nothing -> lift $ putStrLn ("Unknown command: '" <> input <> "'")
         Just cmd -> handleCommand cmd
 
 handleCommand :: MainMenuCommand -> MaybeT IO ()
-handleCommand Game = undefined
+handleCommand Game = lift startGame
 handleCommand Search = undefined
 handleCommand Compute = undefined
 handleCommand Help = lift printHelp

@@ -25,9 +25,13 @@ source-repository head
 
 library
   exposed-modules:
-      ConsolePrintUtil
-      Data.Command
-      Parser.CommandParser
+      Data.GameMenuCommand
+      Data.GameState
+      Data.MainMenuCommand
+      Parser.GameMenuCommandParser
+      Parser.MainMenuCommandParser
+      Printer.GameMenuPrinter
+      Printer.MainMenuPrinter
   other-modules:
       Paths_wordle_solver
   autogen-modules:
@@ -44,6 +48,7 @@ library
 executable wordle-solver-exe
   main-is: Main.hs
   other-modules:
+      GameInteractor
       MainMenuInteractor
       Paths_wordle_solver
   autogen-modules:
