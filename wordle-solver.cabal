@@ -28,10 +28,12 @@ library
       Data.GameMenuCommand
       Data.GameState
       Data.MainMenuCommand
+      Data.WordError
       Parser.GameMenuCommandParser
       Parser.MainMenuCommandParser
       Printer.GameMenuPrinter
       Printer.MainMenuPrinter
+      Util.WordUtil
   other-modules:
       Paths_wordle_solver
   autogen-modules:

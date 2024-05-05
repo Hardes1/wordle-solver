@@ -1,4 +1,4 @@
-module Data.MainMenuCommand(MainMenuCommand(..)) where
+module Data.MainMenuCommand(Command(..)) where
 
-data MainMenuCommand = Game | Search | Compute | Help | Quit
+data Command = Game | Search | Compute | Help | Quit
 

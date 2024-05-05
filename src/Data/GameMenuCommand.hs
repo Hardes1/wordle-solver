@@ -1,3 +1,3 @@
-module Data.GameMenuCommand(GameMenuCommand(..)) where
+module Data.GameMenuCommand(Command(..)) where
 
-data GameMenuCommand = Word String | Help | Back
+data Command = Word String | Help | Back

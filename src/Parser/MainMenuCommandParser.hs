@@ -1,8 +1,8 @@
 module Parser.MainMenuCommandParser (parse) where
 
-import Data.MainMenuCommand (MainMenuCommand (..))
+import Data.MainMenuCommand (Command (..))
 
-parse :: String -> Maybe MainMenuCommand
+parse :: String -> Maybe Command
 parse ":game" = Just Game
 parse ":search" = Just Search
 parse ":compute" = Just Compute
