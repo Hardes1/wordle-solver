@@ -20,7 +20,9 @@ extra-source-files:
 description:         Please see the README on GitHub at <https://github.com/githubuser/wordle-solver#readme>
 
 dependencies:
-- base >= 4.7 && < 5
+  - base >= 4.7 && < 5
+  - transformers
+  - containers
 
 ghc-options:
 - -Wall
@@ -46,6 +48,7 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - wordle-solver
+    - transformers
 
 tests:
   wordle-solver-test:
@@ -57,3 +60,4 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - wordle-solver
+    - containers

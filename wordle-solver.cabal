@@ -7,11 +7,11 @@ cabal-version: 2.2
 name:           wordle-solver
 version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/wordle-solver#readme>
-homepage:       https://github.com/githubuser/wordle-solver#readme
-bug-reports:    https://github.com/githubuser/wordle-solver/issues
-author:         Author name here
-maintainer:     example@example.com
-copyright:      2024 Author name here
+homepage:       https://github.com/Hardes1/wordle-solver#readme
+bug-reports:    https://github.com/Hardes1/wordle-solver/issues
+author:         Georgii Ustinov
+maintainer:     custinovgo@gmail.com
+copyright:      2024 Georgii Ustinov
 license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
@@ -21,11 +21,13 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/wordle-solver
+  location: https://github.com/Hardes1/wordle-solver
 
 library
   exposed-modules:
-      Lib
+      ConsolePrintUtil
+      Data.Command
+      Parser.CommandParser
   other-modules:
       Paths_wordle_solver
   autogen-modules:
@@ -35,11 +37,14 @@ library
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
+    , containers
+    , transformers
   default-language: Haskell2010
 
 executable wordle-solver-exe
   main-is: Main.hs
   other-modules:
+      MainMenuInteractor
       Paths_wordle_solver
   autogen-modules:
       Paths_wordle_solver
@@ -48,6 +53,8 @@ executable wordle-solver-exe
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , containers
+    , transformers
     , wordle-solver
   default-language: Haskell2010
 
@@ -63,5 +70,7 @@ test-suite wordle-solver-test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , containers
+    , transformers
     , wordle-solver
   default-language: Haskell2010
