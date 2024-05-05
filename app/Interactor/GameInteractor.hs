@@ -1,6 +1,6 @@
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Use when" #-}
-module GameInteractor(startGame) where
+module Interactor.GameInteractor(startGame) where
 import Control.Monad (MonadPlus(mzero), forever)
 import Control.Monad.Trans.State (StateT, get, modify)
 import Control.Monad.Trans.Maybe (MaybeT (runMaybeT))

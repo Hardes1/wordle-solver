@@ -51,8 +51,8 @@ library
 executable wordle-solver-exe
   main-is: Main.hs
   other-modules:
-      GameInteractor
-      MainMenuInteractor
+      Interactor.GameInteractor
+      Interactor.MainMenuInteractor
       Paths_wordle_solver
   autogen-modules:
       Paths_wordle_solver

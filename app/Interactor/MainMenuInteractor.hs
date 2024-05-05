@@ -1,11 +1,11 @@
-module MainMenuInteractor(run) where
+module Interactor.MainMenuInteractor(run) where
 
 import Printer.MainMenuPrinter(printWelcomeMessage, printHelp, printExit)
 import Control.Monad.Trans.Maybe (MaybeT (runMaybeT))
 import Control.Monad.Trans.Class (lift)
 import Control.Monad (forever, MonadPlus (mzero))
 import Data.MainMenuCommand (Command (..))
-import GameInteractor(startGame)
+import Interactor.GameInteractor(startGame)
 import Parser.MainMenuCommandParser(parse)
 
 run :: IO ()
