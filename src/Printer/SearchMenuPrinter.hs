@@ -1,4 +1,4 @@
-module Printer.SearchMenuPrinter (printWelcomeMessage, printHelp, printExit) where
+module Printer.SearchMenuPrinter (printWelcomeMessage, printHelp) where
 
 import Data.GameState (Color (..), WordDiff (..))
 import Printer.WordDiffPrinter (printWordDiff)
@@ -20,7 +20,3 @@ printHelp = do
   putStrLn ":reset - clears all clues which are in the state"
   putStrLn ":help - prints this menu again"
   putStrLn ":back - goes back to the main menu"
-
-
-printExit :: IO ()
-printExit = putStrLn "Going back to menu..."

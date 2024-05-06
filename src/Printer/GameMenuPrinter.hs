@@ -2,6 +2,7 @@ module Printer.GameMenuPrinter(printHelp, printWelcomeMessage, printGameStatus, 
 import Data.GameState (WordDiff(..), GameState (..), GameStatus (..),  IncorrectStatus(..))
 import Printer.WordDiffPrinter(printWordDiff, printWordDiffList)
 import Util.WordUtil (maxGuessSteps)
+import Printer.CommonPrinter(printExit)
 
 
 printHelp :: IO ()
@@ -14,9 +15,6 @@ printHelp = do
 printWelcomeMessage :: IO ()
 printWelcomeMessage = putStrLn "Welcome to the wordle game!"
 
-
-printGoingBackToMainMenu :: IO ()
-printGoingBackToMainMenu = putStrLn "Going back to main menu..."
 
 printProgress :: [WordDiff] -> IO ()
 printProgress wordDiffList = do
@@ -31,10 +29,10 @@ printGameStatus env = case env of
         CorrectState status wordDiffList word -> do 
             putStrLn $ "You " <> show status <> "! Correct word was " <> word <> "."
             printProgress $ reverse wordDiffList
-            printGoingBackToMainMenu
+            printExit
         IncorrectState Cancelled -> do 
             putStrLn "You cancelled the game!"
-            printGoingBackToMainMenu
+            printExit
 
 printHUD :: GameState -> IO ()
 printHUD env = case env of

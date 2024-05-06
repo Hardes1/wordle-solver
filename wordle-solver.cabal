@@ -32,6 +32,7 @@ library
       GameProcessor
       Parser.GameMenuCommandParser
       Parser.MainMenuCommandParser
+      Printer.CommonPrinter
       Printer.GameMenuPrinter
       Printer.MainMenuPrinter
       Printer.SearchMenuPrinter
