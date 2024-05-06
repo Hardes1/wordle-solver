@@ -1,29 +1,16 @@
-module Util.WordUtil(isCorrectWord, isKnownWord, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove, maxGuessSteps) where
-import Data.WordError (Error(..))
+module Util.WordUtil(isKnownWord, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove, maxGuessSteps) where
+import Data.WordError(Error(..))
 import Data.GameState (WordDiff (WordDiff), Color (..))
-import Data.Char (isAlpha)
 import WordGenerator (getLaWordList, getTaWordList)
 
 maxGuessSteps :: Int
 maxGuessSteps = 6
-
-isValidLength :: String -> Bool
-isValidLength word = length word == 5
-
-isConsistOfLetters :: String -> Bool
-isConsistOfLetters = all isAlpha
 
 isKnownWord :: String -> IO (Either Error ())
 isKnownWord word = do
     taList <- getLaWordList
     laList <- getTaWordList
     return (if elem word taList || elem word laList then Right () else  Left UnknownWord)
-
-isCorrectWord :: String -> Either Error ()
-isCorrectWord word = do
-    if not $ isValidLength word then Left (InvalidLength (length word))
-    else if not $ isConsistOfLetters word then Left BadCharacter
-    else Right ()
 
 isLastGuessFull :: [WordDiff] -> Bool
 isLastGuessFull (WordDiff arr:_) = all ((== Green) . fst) arr
