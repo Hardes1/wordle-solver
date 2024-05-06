@@ -7,8 +7,9 @@ import Control.Monad.Trans.State (StateT, get, modify)
 import Control.Monad.Trans.Class (MonadTrans(lift))
 import Data.SearchMenuCommand(Command(..))
 import Data.GameState(WordDiff(..))
-import Printer.CommonPrinter(printExit)
+import Printer.CommonPrinter(printExit, printParseError)
 import Parser.SearchMenuParser(parse)
+import Printer.WordDiffPrinter(printWordDiffList)
 
 startSearch :: IO ()
 startSearch = do
@@ -19,9 +20,19 @@ startSearch = do
 loop :: StateT [WordDiff] (MaybeT IO) ()
 loop = forever $ do
     input <- lift . lift $ getLine
-    lift . lift $ putStrLn input
-    let command = parse input
-    handleCommand command
+    let parseResult = parse input
+    case parseResult of
+        Left err -> lift . lift $ printParseError err
+        Right cmd -> handleCommand cmd
 
 handleCommand :: Command -> StateT [WordDiff] (MaybeT IO) ()
-handleCommand _ = undefined
+handleCommand (NewWord wordDiff) = modify (wordDiff :)
+handleCommand Reset = modify (const [])
+handleCommand Help = lift . lift $ printHelp
+handleCommand Status = do
+    env <- get
+    lift . lift $ printWordDiffList $ reverse env
+
+handleCommand Quit = do
+    lift . lift $ printExit
+    mzero

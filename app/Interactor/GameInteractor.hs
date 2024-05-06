@@ -12,6 +12,7 @@ import Parser.GameMenuCommandParser(parse)
 import Data.GameMenuCommand (Command(..))
 import Printer.GameMenuPrinter (printHelp, printWelcomeMessage, printGameStatus, printHUD)
 import Printer.WordDiffPrinter (printWordDiff)
+import Printer.CommonPrinter (printParseError)
 import GameProcessor (calculateDiff)
 import WordGenerator (genGuessWord)
 
@@ -33,7 +34,7 @@ loop = forever $ do
     input <- lift . lift $ getLine
     let parseResult = parse input
     case parseResult of 
-        Left err -> lift . lift $ putStrLn $ "Parse Error: " <> show err
+        Left err -> lift . lift $ printParseError err
         Right cmd -> handleCommand cmd
     
 

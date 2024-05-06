@@ -1,4 +1,5 @@
 module Data.SearchMenuCommand(Command(..)) where
+import Data.GameState (WordDiff)
 
 
-data Command = NewWord | Search | Reset | Status | Help | Quit
+data Command = NewWord WordDiff | Search | Reset | Status | Help | Quit

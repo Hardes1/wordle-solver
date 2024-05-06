@@ -1,7 +1,8 @@
-module Util.WordUtil(isKnownWord, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove, maxGuessSteps) where
+module Util.WordUtil(isKnownWord, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove, maxGuessSteps, isConsistOfLetters, isValidLength) where
 import Data.WordError(Error(..))
 import Data.GameState (WordDiff (WordDiff), Color (..))
 import WordGenerator (getLaWordList, getTaWordList)
+import Data.Char (isAlpha)
 
 maxGuessSteps :: Int
 maxGuessSteps = 6
@@ -21,3 +22,9 @@ isNumberOfMovesExceeded arr = length arr > maxGuessSteps
 
 isPossibleToMakeMove :: [WordDiff] -> Bool
 isPossibleToMakeMove arr = length arr < maxGuessSteps
+
+isConsistOfLetters :: String -> Bool
+isConsistOfLetters = all isAlpha
+
+isValidLength :: String -> Bool
+isValidLength word = length word == 5
