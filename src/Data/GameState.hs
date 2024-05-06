@@ -3,7 +3,7 @@ module Data.GameState(Color(..), GameState(..), WordDiff(..), GameStatus(..),  I
 
 data Color = Green | Yellow | Red deriving (Show, Eq)
 
-newtype WordDiff = WordDiff [(Color, Char)] deriving Show
+newtype WordDiff = WordDiff { diffList :: [(Color, Char)] } deriving Show
 
 data GameStatus = InProgress | Win | Lose
 

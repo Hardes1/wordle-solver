@@ -4,7 +4,6 @@ module Parser.SearchMenuParser (parse, ParseError (..)) where
 
 import Data.Char (toLower)
 import Data.SearchMenuCommand (Command (..))
-import Debug.Trace (trace)
 import Util.WordUtil (isConsistOfLetters, isValidLength)
 import Data.GameState (Color(Red, Yellow, Green), WordDiff (WordDiff))
 

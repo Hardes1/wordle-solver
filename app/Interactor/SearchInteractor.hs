@@ -10,6 +10,9 @@ import Data.GameState(WordDiff(..))
 import Printer.CommonPrinter(printExit, printParseError)
 import Parser.SearchMenuParser(parse)
 import Printer.WordDiffPrinter(printWordDiffList)
+import WordGenerator (getLaWordList)
+import GameProcessor (getWordsByWordDiffList)
+import Debug.Trace (trace)
 
 startSearch :: IO ()
 startSearch = do
@@ -26,6 +29,11 @@ loop = forever $ do
         Right cmd -> handleCommand cmd
 
 handleCommand :: Command -> StateT [WordDiff] (MaybeT IO) ()
+handleCommand Search = do
+    env <- get
+    availableWords <- lift . lift $ getLaWordList
+    let filteredWordList = getWordsByWordDiffList availableWords env
+    trace (show filteredWordList) (return ())
 handleCommand (NewWord wordDiff) = modify (wordDiff :)
 handleCommand Reset = modify (const [])
 handleCommand Help = lift . lift $ printHelp
