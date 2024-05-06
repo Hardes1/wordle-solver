@@ -34,6 +34,8 @@ library
       Parser.MainMenuCommandParser
       Printer.GameMenuPrinter
       Printer.MainMenuPrinter
+      Printer.SearchMenuPrinter
+      Printer.WordDiffPrinter
       Util.WordUtil
       WordGenerator
   other-modules:
@@ -54,7 +56,8 @@ executable wordle-solver-exe
   main-is: Main.hs
   other-modules:
       Interactor.GameInteractor
-      Interactor.MainMenuInteractor
+      Interactor.MainInteractor
+      Interactor.SearchInteractor
       Paths_wordle_solver
   autogen-modules:
       Paths_wordle_solver

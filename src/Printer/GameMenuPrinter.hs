@@ -1,8 +1,8 @@
-module Printer.GameMenuPrinter(printHelp, printWelcomeMessage, printWordDiff, printGameStatus, printHUD) where
-import Data.GameState (WordDiff(..), Color (..), GameState (..), GameStatus (..),  IncorrectStatus(..))
-import Data.Foldable (traverse_)
+module Printer.GameMenuPrinter(printHelp, printWelcomeMessage, printGameStatus, printHUD) where
+import Data.GameState (WordDiff(..), GameState (..), GameStatus (..),  IncorrectStatus(..))
+import Printer.WordDiffPrinter(printWordDiff, printWordDiffList)
 import Util.WordUtil (maxGuessSteps)
-import Data.Char (toUpper)
+
 
 printHelp :: IO ()
 printHelp = do
@@ -14,16 +14,6 @@ printHelp = do
 printWelcomeMessage :: IO ()
 printWelcomeMessage = putStrLn "Welcome to the wordle game!"
 
-printWordDiff :: WordDiff -> IO ()
-printWordDiff (WordDiff arr) = do
-     traverse_ (\(color, chr) -> case color of
-          Green -> putStr $ "\ESC[32m" <> [toUpper chr] <> "\ESC[0m"
-          Yellow -> putStr $ "\ESC[33m" <> [toUpper chr] <> "\ESC[0m"
-          Red -> putStr $ "\ESC[31m" <> [toUpper chr] <> "\ESC[0m") arr
-     putStrLn []
-
-printWordDiffList :: [WordDiff] -> IO ()
-printWordDiffList = traverse_ printWordDiff 
 
 printGoingBackToMainMenu :: IO ()
 printGoingBackToMainMenu = putStrLn "Going back to main menu..."

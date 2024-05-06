@@ -1,4 +1,4 @@
-module Interactor.MainMenuInteractor(run) where
+module Interactor.MainInteractor(run) where
 
 import Printer.MainMenuPrinter(printWelcomeMessage, printHelp, printExit)
 import Control.Monad.Trans.Maybe (MaybeT (runMaybeT))
@@ -6,6 +6,7 @@ import Control.Monad.Trans.Class (lift)
 import Control.Monad (forever, MonadPlus (mzero))
 import Data.MainMenuCommand (Command (..))
 import Interactor.GameInteractor(startGame)
+import Interactor.SearchInteractor(startSearch)
 import Parser.MainMenuCommandParser(parse)
 
 run :: IO ()
@@ -23,7 +24,7 @@ loop = forever $ do
 
 handleCommand :: Command -> MaybeT IO ()
 handleCommand Game = lift startGame
-handleCommand Search = undefined
+handleCommand Search = lift startSearch
 handleCommand Compute = undefined
 handleCommand Help = lift printHelp
 handleCommand Quit = mzero

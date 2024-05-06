@@ -1,6 +1,6 @@
 module Main (main) where
 
-import Interactor.MainMenuInteractor(run)
+import Interactor.MainInteractor(run)
 
 main :: IO ()
 main = run

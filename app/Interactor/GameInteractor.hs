@@ -10,7 +10,8 @@ import Data.GameState(GameState(..), WordDiff(..), GameStatus(..), IncorrectStat
 import Util.WordUtil(isCorrectWord, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove, isKnownWord)
 import Parser.GameMenuCommandParser(parse)
 import Data.GameMenuCommand (Command(..))
-import Printer.GameMenuPrinter (printHelp, printWelcomeMessage, printWordDiff, printGameStatus, printHUD)
+import Printer.GameMenuPrinter (printHelp, printWelcomeMessage, printGameStatus, printHUD)
+import Printer.WordDiffPrinter (printWordDiff)
 import GameProcessor (calculateDiff)
 import WordGenerator (genGuessWord)
 
