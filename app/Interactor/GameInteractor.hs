@@ -7,7 +7,7 @@ import Control.Monad.Trans.Maybe (MaybeT (runMaybeT))
 import Control.Monad.Trans.State.Lazy (execStateT)
 import Control.Monad.Trans.Class (MonadTrans(lift))
 import Data.GameState(GameState(..), WordDiff(..), GameStatus(..), IncorrectStatus(..))
-import Util.WordUtil(isCorrectWord, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove)
+import Util.WordUtil(isCorrectWord, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove, isKnownWord)
 import Parser.GameMenuCommandParser(parse)
 import Data.GameMenuCommand (Command(..))
 import Printer.GameMenuPrinter (printHelp, printWelcomeMessage, printWordDiff, printGameStatus, printHUD)
@@ -55,8 +55,9 @@ handleCommand Guess = do
     lift . lift $ printGameStatus env
 handleCommand (Word input) = do
     env <- lift get
+    isKnownWordRes <- lift . lift $ isKnownWord input
     let (wordDiffList, guessWord) = extractDataFromEnv env
-    case isCorrectWord input of
+    case isCorrectWord input >> isKnownWordRes of
         Left err -> lift . lift $ putStrLn ("Error: " <> show err)
         Right _ -> do
             let diff = calculateDiff guessWord input
