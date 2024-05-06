@@ -28,10 +28,12 @@ library
       Data.GameMenuCommand
       Data.GameState
       Data.MainMenuCommand
+      Data.SearchMenuCommand
       Data.WordError
       GameProcessor
       Parser.GameMenuCommandParser
       Parser.MainMenuCommandParser
+      Parser.SearchMenuParser
       Printer.CommonPrinter
       Printer.GameMenuPrinter
       Printer.MainMenuPrinter

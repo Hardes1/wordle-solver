@@ -1,6 +1,6 @@
 module Printer.GameMenuPrinter(printHelp, printWelcomeMessage, printGameStatus, printHUD) where
 import Data.GameState (WordDiff(..), GameState (..), GameStatus (..),  IncorrectStatus(..))
-import Printer.WordDiffPrinter(printWordDiff, printWordDiffList)
+import Printer.WordDiffPrinter(printWordDiffList)
 import Util.WordUtil (maxGuessSteps)
 import Printer.CommonPrinter(printExit)
 
