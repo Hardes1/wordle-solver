@@ -3,11 +3,13 @@ import Data.GameState (WordDiff(..), Color (..))
 import qualified Data.Map.Strict as Map(Map, fromListWith)
 import Control.Monad.Trans.State (State, evalState, get, modify)
 import Data.Map.Strict (adjust, (!?))
+import Data.Char (toLower)
 
 calculateDiff :: String -> String -> WordDiff
 calculateDiff expected actual =
-    let letterCount = Map.fromListWith (+) [(x, 1) | (x, y) <- zip expected actual, x /= y]
-    in evalState (calculateDiffInner expected actual) (letterCount, [])
+    let actualTransformed = map toLower actual
+        letterCount = Map.fromListWith (+) [(x, 1) | (x, y) <- zip expected actual, x /= y]
+    in evalState (calculateDiffInner expected actualTransformed) (letterCount, [])
 
 
 

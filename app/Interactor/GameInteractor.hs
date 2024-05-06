@@ -10,7 +10,7 @@ import Data.GameState(GameState(..), WordDiff(..), GameStatus(..), IncorrectStat
 import Util.WordUtil(isCorrectWord, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove)
 import Parser.GameMenuCommandParser(parse)
 import Data.GameMenuCommand (Command(..))
-import Printer.GameMenuPrinter (printHelp, printWelcomeMessage, printWordDiff, printGameResult, printHUD)
+import Printer.GameMenuPrinter (printHelp, printWelcomeMessage, printWordDiff, printGameStatus, printHUD)
 import GameProcessor (calculateDiff)
 import WordGenerator (genGuessWord)
 
@@ -22,14 +22,14 @@ startGame = do
     printHelp
     word <- genGuessWord
     env <- execStateT (runMaybeT loop) (CorrectState InProgress [] word)
-    printGameResult env
+    printGameStatus env
 
 loop :: MaybeT (StateT GameState IO) ()
 loop = forever $ do
     determineGameState
     env <- lift get
     lift . lift $ printHUD env
-    input <- lift . lift $ getLine -- add logic to finish game
+    input <- lift . lift $ getLine
     handleCommand $ parse input
 
 determineGameState :: MaybeT (StateT GameState IO) ()
@@ -50,6 +50,9 @@ handleCommand Back = do
     lift $ modify (\_ -> IncorrectState Cancelled)
     mzero
 handleCommand Help = lift . lift $ printHelp
+handleCommand Guess = do
+    env <- lift get
+    lift . lift $ printGameStatus env
 handleCommand (Word input) = do
     env <- lift get
     let (wordDiffList, guessWord) = extractDataFromEnv env
