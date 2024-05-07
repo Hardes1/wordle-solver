@@ -1,11 +1,11 @@
 {-# LANGUAGE InstanceSigs #-}
-module Parser.GameMenuCommandParser(parse, ParseError(..)) where
+module Parser.GameMenuCommandParser(parse, ParseError(..), ErrorType(..)) where
 import Data.GameMenuCommand(Command(..))
 import Util.WordUtil (isConsistOfLetters, isValidLength)
 
-data ErrorType = InvalidLength | BadCharacter | UnknownCommand
+data ErrorType = InvalidLength | BadCharacter | UnknownCommand deriving (Eq, Show)
 
-data ParseError = ParseError ErrorType String
+data ParseError = ParseError ErrorType String deriving (Eq)
 
 instance Show ParseError where
     show :: ParseError -> String

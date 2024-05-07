@@ -1,12 +1,12 @@
-module Unit.Util.WordUtilTest (wordUtilTest) where
+module Unit.Util.WordUtilTest (testWordUtil) where
 
 import Data.GameState (Color (Green, Red, Yellow), WordDiff (WordDiff))
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.HUnit (testCase, (@?=))
 import Util.WordUtil (isConsistOfLetters, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove, isValidLength, maxGuessSteps)
 
-wordUtilTest :: TestTree
-wordUtilTest =
+testWordUtil :: TestTree
+testWordUtil =
   testGroup
     "Word util test"
     [ testMaxGuessSteps,

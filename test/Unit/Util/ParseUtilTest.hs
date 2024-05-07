@@ -1,11 +1,11 @@
-module Unit.Util.ParseUtilTest(parseUtilTest) where
+module Unit.Util.ParseUtilTest(testParseUtil) where
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.HUnit (testCase, (@?=))
 import Util.ParseUtil (trim)
 
 
-parseUtilTest :: TestTree
-parseUtilTest = testGroup "Parse util Test" [
+testParseUtil :: TestTree
+testParseUtil = testGroup "Parse util Test" [
     trimTest
     ]
 

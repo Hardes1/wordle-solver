@@ -1,15 +1,15 @@
 {-# LANGUAGE InstanceSigs #-}
 
-module Parser.SearchMenuParser (parse, ParseError (..)) where
+module Parser.SearchMenuCommandParser (parse, ParseError (..), ErrorType(..)) where
 
 import Data.Char (toLower)
 import Data.SearchMenuCommand (Command (..))
 import Util.WordUtil (isConsistOfLetters, isValidLength)
 import Data.GameState (Color(Red, Yellow, Green), WordDiff (WordDiff))
 
-data ErrorType = UnknownCommand | InvalidWordLength | InvalidColorLength | BadWordCharacter | BadColorCharacter
+data ErrorType = UnknownCommand | InvalidWordLength | InvalidColorLength | BadWordCharacter | BadColorCharacter deriving (Eq, Show)
 
-data ParseError = ParseError ErrorType String | InvalidNumberOfWords Int
+data ParseError = ParseError ErrorType String | InvalidNumberOfWords Int deriving Eq
 
 instance Show ParseError where
   show :: ParseError -> String
@@ -54,7 +54,7 @@ isCorrectWord word
 isCorrectColorList :: String -> Either ParseError ()
 isCorrectColorList colorList
   | not $ isValidLength colorList = Left $ ParseError InvalidColorLength colorList
-  | not $ isConsistsOfOnlyAllowedColors colorList = Left $ ParseError BadWordCharacter colorList
+  | not $ isConsistsOfOnlyAllowedColors colorList = Left $ ParseError BadColorCharacter colorList
   | otherwise = return ()
 
 isConsistsOfOnlyAllowedColors :: String -> Bool

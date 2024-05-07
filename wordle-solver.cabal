@@ -33,7 +33,7 @@ library
       GameProcessor
       Parser.GameMenuCommandParser
       Parser.MainMenuCommandParser
-      Parser.SearchMenuParser
+      Parser.SearchMenuCommandParser
       Printer.CommonPrinter
       Printer.GameMenuPrinter
       Printer.MainMenuPrinter
@@ -80,6 +80,9 @@ test-suite wordle-solver-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Unit.Parser.GameMenuCommandParserTest
+      Unit.Parser.MainMenuCommandParserTest
+      Unit.Parser.SearchMenuCommandParser
       Unit.Util.ParseUtilTest
       Unit.Util.WordUtilTest
       Paths_wordle_solver
