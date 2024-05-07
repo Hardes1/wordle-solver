@@ -4,7 +4,6 @@ import qualified Data.Map.Strict as Map(Map, fromListWith)
 import Control.Monad.Trans.State (State, evalState, get, modify)
 import Data.Map.Strict (adjust, (!?))
 import Data.Char (toLower)
-import Debug.Trace (trace)
 
 getWordsByWordDiffList :: [String] -> [WordDiff] -> [String]
 getWordsByWordDiffList wordList wordDiffList = filter (`isWordSatisfyPattern` wordDiffList) wordList
@@ -16,7 +15,7 @@ areCharsEqual a b = toLower a == toLower b
 isWordSatisfyPattern :: String -> [WordDiff] -> Bool
 isWordSatisfyPattern word wordDiffList =
     let letterCount = Map.fromListWith (+) [(x, 1) | x <- word]
-    in trace ("Word is: " <> word) $ all (\wordDiff ->
+    in all (\wordDiff ->
         let wordDiffArr = diffList wordDiff
         in evalState (isWordSatisfyPatternInner word wordDiffArr) letterCount
         ) wordDiffList

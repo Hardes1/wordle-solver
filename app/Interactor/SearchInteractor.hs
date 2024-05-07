@@ -1,6 +1,6 @@
 module Interactor.SearchInteractor(startSearch) where
 import Control.Monad (MonadPlus(mzero), forever)
-import Printer.SearchMenuPrinter(printWelcomeMessage, printHelp)
+import Printer.SearchMenuPrinter(printWelcomeMessage, printHelp, printFilteredWords)
 import Control.Monad.Trans.Maybe (MaybeT (runMaybeT))
 import Control.Monad.Trans.State.Lazy (execStateT)
 import Control.Monad.Trans.State (StateT, get, modify)
@@ -12,7 +12,6 @@ import Parser.SearchMenuParser(parse)
 import Printer.WordDiffPrinter(printWordDiffList)
 import WordGenerator (getLaWordList)
 import GameProcessor (getWordsByWordDiffList)
-import Debug.Trace (trace)
 
 startSearch :: IO ()
 startSearch = do
@@ -33,7 +32,7 @@ handleCommand Search = do
     env <- get
     availableWords <- lift . lift $ getLaWordList
     let filteredWordList = getWordsByWordDiffList availableWords env
-    trace (show filteredWordList) (return ())
+    lift . lift $ printFilteredWords (reverse env) (reverse filteredWordList)
 handleCommand (NewWord wordDiff) = modify (wordDiff :)
 handleCommand Reset = modify (const [])
 handleCommand Help = lift . lift $ printHelp
