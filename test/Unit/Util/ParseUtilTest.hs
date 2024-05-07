@@ -1,4 +1,4 @@
-module Util.ParseUtilTest(parseUtilTest) where
+module Unit.Util.ParseUtilTest(parseUtilTest) where
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.HUnit (testCase, (@?=))
 import Util.ParseUtil (trim)

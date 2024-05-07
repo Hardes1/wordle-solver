@@ -1,6 +1,6 @@
 import Test.Tasty (TestTree, testGroup, defaultMain)
-import Util.WordUtilTest (wordUtilTest)
-import Util.ParseUtilTest (parseUtilTest)
+import Unit.Util.WordUtilTest (wordUtilTest)
+import Unit.Util.ParseUtilTest (parseUtilTest)
 
 tests :: TestTree
 tests = testGroup "Wordle solver tests" [

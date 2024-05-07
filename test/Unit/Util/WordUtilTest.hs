@@ -1,4 +1,4 @@
-module Util.WordUtilTest (wordUtilTest) where
+module Unit.Util.WordUtilTest (wordUtilTest) where
 
 import Data.GameState (Color (Green, Red, Yellow), WordDiff (WordDiff))
 import Test.Tasty (TestTree, testGroup)
