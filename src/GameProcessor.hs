@@ -16,44 +16,34 @@ areCharsEqual a b = toLower a == toLower b
 isWordSatisfyPattern :: String -> [WordDiff] -> Bool
 isWordSatisfyPattern word wordDiffList =
     let letterCount = Map.fromListWith (+) [(x, 1) | x <- word]
-    in trace ("Word is: " <> word) $ all (\wordDiff -> 
+    in trace ("Word is: " <> word) $ all (\wordDiff ->
         let wordDiffArr = diffList wordDiff
         in evalState (isWordSatisfyPatternInner word wordDiffArr) letterCount
         ) wordDiffList
 
 isWordSatisfyPatternInner :: String -> [(Color, Char)] -> State (Map.Map Char Int) Bool
 isWordSatisfyPatternInner word wordDiffList = do
-    afterGY <- isWordSatisfyPatternGY word wordDiffList
-    afterR <- isWordSatisfyPatternR word wordDiffList
-    return $ afterGY && afterR
+    let isWordSatisfyColorPartially = isWordSatisfyColor word wordDiffList
+    afterG <- isWordSatisfyColorPartially Green (&&) (adjust (subtract 1))
+    afterY <- isWordSatisfyColorPartially Yellow (\x y -> x && not y) (adjust (subtract 1))
+    afterR <- isWordSatisfyColorPartially Red (\x y -> not (x || y)) (\_ y -> y)
+    return $ afterG && afterY && afterR
 
-isWordSatisfyPatternGY :: String -> [(Color, Char)] -> State (Map.Map Char Int) Bool
-isWordSatisfyPatternGY (wordChr:tWord) ((col, patternChr):tcol) = do
+isWordSatisfyColor :: String -> [(Color, Char)] -> Color  -> (Bool -> Bool -> Bool) -> (Char -> Map.Map Char Int -> Map.Map Char Int) -> State (Map.Map Char Int) Bool
+isWordSatisfyColor (wordChr:tWord) ((col, patternChr):tcol) currentCol condPred trans  = do
     cnt <- get
-    case col of 
-        Green -> if isContainsAtLeastOneLetter cnt patternChr && areCharsEqual wordChr patternChr then go
-        else return False
-        Yellow -> if isContainsAtLeastOneLetter cnt patternChr && not (areCharsEqual wordChr patternChr) then go
-        else return False
-        Red -> isWordSatisfyPatternGY tWord tcol
+    let condOne = isContainsAtLeastOneLetter cnt patternChr
+        condTwo = areCharsEqual wordChr patternChr
+    if col == currentCol && condPred condOne condTwo then go
+    else if col == currentCol then return False
+    else isWordSatisfyColor tWord tcol currentCol condPred trans
     where
         go = do
-            cnt <- get
-            modify $ const (adjust (subtract 1) wordChr cnt)
-            isWordSatisfyPatternGY tWord tcol
+            modify (trans wordChr)
+            isWordSatisfyColor tWord tcol currentCol condPred trans
+isWordSatisfyColor [] [] _ _ _ = return True
+isWordSatisfyColor _ _ _ _ _ = error "Illegal state exception both word and pattern were different length"
 
-isWordSatisfyPatternGY [] [] = return True
-isWordSatisfyPatternGY _ _ = error "Illegal state exception both word and pattern were different length"
-
-isWordSatisfyPatternR :: String -> [(Color, Char)] -> State (Map.Map Char Int) Bool
-isWordSatisfyPatternR (wordChr:tWord) ((col, patternChr):tcol) = do
-    cnt <- get
-    case col of 
-        Red -> if not $ isContainsAtLeastOneLetter cnt patternChr || areCharsEqual wordChr patternChr then isWordSatisfyPatternR tWord tcol
-        else return False
-        _ -> isWordSatisfyPatternR tWord tcol
-isWordSatisfyPatternR [] [] = return True
-isWordSatisfyPatternR _ _ = error "Illegal state exception both word and pattern were different length"
 
 calculateDiff :: String -> String -> WordDiff
 calculateDiff expected actual =
