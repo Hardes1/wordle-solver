@@ -39,6 +39,7 @@ library
       Printer.MainMenuPrinter
       Printer.SearchMenuPrinter
       Printer.WordDiffPrinter
+      Util.ParseUtil
       Util.WordUtil
       WordGenerator
   other-modules:

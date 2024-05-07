@@ -8,6 +8,7 @@ import Data.MainMenuCommand (Command (..))
 import Interactor.GameInteractor(startGame)
 import Interactor.SearchInteractor(startSearch)
 import Parser.MainMenuCommandParser(parse)
+import Util.ParseUtil (trim)
 
 run :: IO ()
 run = do
@@ -18,7 +19,7 @@ run = do
 loop :: MaybeT IO ()
 loop = forever $ do
     input <- lift getLine
-    case parse input of 
+    case parse $ trim input of 
         Nothing -> lift $ putStrLn ("Unknown command: '" <> input <> "'")
         Just cmd -> handleCommand cmd
 

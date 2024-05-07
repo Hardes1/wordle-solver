@@ -1,4 +1,4 @@
-module Printer.SearchMenuPrinter (printWelcomeMessage, printHelp, printFilteredWords) where
+module Printer.SearchMenuPrinter (printBackExtraInfo, printWelcomeMessage, printHelp, printFilteredWords) where
 
 import Data.GameState (Color (..), WordDiff (..))
 import Printer.WordDiffPrinter (printWordDiff, printWordDiffList)
@@ -28,3 +28,6 @@ printFilteredWords wordDiffList wordList = do
   printWordDiffList wordDiffList
   putStrLn $ "Words which satisfy pattern (total number of entries " <> show (length wordList) <> "):"
   traverse_ putStrLn wordList
+
+printBackExtraInfo :: IO ()
+printBackExtraInfo = putStrLn "You are leaving search menu!"

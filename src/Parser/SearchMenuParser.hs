@@ -22,7 +22,7 @@ instance Show ParseError where
 
 parse :: String -> Either ParseError Command
 parse ":search" = Right Search
-parse ":quit" = Right Quit
+parse ":back" = Right Back
 parse ":help" = Right Help
 parse ":reset" = Right Reset
 parse ":status" = Right Status

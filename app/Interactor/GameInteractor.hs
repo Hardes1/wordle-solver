@@ -15,6 +15,7 @@ import Printer.WordDiffPrinter (printWordDiff)
 import Printer.CommonPrinter (printParseError)
 import GameProcessor (calculateDiff)
 import WordGenerator (genGuessWord)
+import Util.ParseUtil (trim)
 
 
 
@@ -32,7 +33,7 @@ loop = forever $ do
     env <- lift get
     lift . lift $ printHUD env
     input <- lift . lift $ getLine
-    let parseResult = parse input
+    let parseResult = parse $ trim input
     case parseResult of 
         Left err -> lift . lift $ printParseError err
         Right cmd -> handleCommand cmd

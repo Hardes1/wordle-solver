@@ -1,6 +1,6 @@
 module Interactor.SearchInteractor(startSearch) where
 import Control.Monad (MonadPlus(mzero), forever)
-import Printer.SearchMenuPrinter(printWelcomeMessage, printHelp, printFilteredWords)
+import Printer.SearchMenuPrinter(printWelcomeMessage, printHelp, printFilteredWords, printBackExtraInfo)
 import Control.Monad.Trans.Maybe (MaybeT (runMaybeT))
 import Control.Monad.Trans.State.Lazy (execStateT)
 import Control.Monad.Trans.State (StateT, get, modify)
@@ -12,17 +12,19 @@ import Parser.SearchMenuParser(parse)
 import Printer.WordDiffPrinter(printWordDiffList)
 import WordGenerator (getLaWordList)
 import GameProcessor (getWordsByWordDiffList)
+import Util.ParseUtil (trim)
 
 startSearch :: IO ()
 startSearch = do
     printWelcomeMessage
     printHelp
-    runMaybeT (execStateT loop []) >> printExit
+    runMaybeT (execStateT loop [])
+    printExit
 
 loop :: StateT [WordDiff] (MaybeT IO) ()
 loop = forever $ do
     input <- lift . lift $ getLine
-    let parseResult = parse input
+    let parseResult = parse $ trim input
     case parseResult of
         Left err -> lift . lift $ printParseError err
         Right cmd -> handleCommand cmd
@@ -39,7 +41,6 @@ handleCommand Help = lift . lift $ printHelp
 handleCommand Status = do
     env <- get
     lift . lift $ printWordDiffList $ reverse env
-
-handleCommand Quit = do
-    lift . lift $ printExit
+handleCommand Back = do
+    lift . lift $ printBackExtraInfo
     mzero
