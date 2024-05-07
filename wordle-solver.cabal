@@ -80,6 +80,8 @@ test-suite wordle-solver-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Util.ParseUtilTest
+      Util.WordUtilTest
       Paths_wordle_solver
   autogen-modules:
       Paths_wordle_solver
@@ -90,6 +92,8 @@ test-suite wordle-solver-test
       base >=4.7 && <5
     , containers
     , random
+    , tasty
+    , tasty-hunit
     , transformers
     , wordle-solver
   default-language: Haskell2010
