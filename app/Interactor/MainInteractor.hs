@@ -27,7 +27,7 @@ handleCommand :: Command -> MaybeT IO ()
 handleCommand Game = lift startGame
 handleCommand Search = lift startSearch
 handleCommand Compute = undefined
-handleCommand Help = lift printHelp
+handleCommand Help = lift $ putStrLn "Not implemented yet!"
 handleCommand Quit = mzero
 
 
