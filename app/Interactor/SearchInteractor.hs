@@ -11,7 +11,7 @@ import Printer.CommonPrinter(printExit, printParseError)
 import Parser.SearchMenuCommandParser(parse)
 import Printer.WordDiffPrinter(printWordDiffList)
 import WordGenerator (getLaWordList)
-import GameProcessor (getWordsByWordDiffList)
+import WordProcessor (getWordsByWordDiffList)
 import Util.ParseUtil (trim)
 
 startSearch :: IO ()

@@ -1,4 +1,4 @@
-module GameProcessor(calculateDiff, getWordsByWordDiffList) where
+module WordProcessor(calculateDiff, getWordsByWordDiffList) where
 import Data.GameState (WordDiff(..), Color (..))
 import qualified Data.Map.Strict as Map(Map, fromListWith)
 import Control.Monad.Trans.State (State, evalState, get, modify)

@@ -30,7 +30,6 @@ library
       Data.MainMenuCommand
       Data.SearchMenuCommand
       Data.WordError
-      GameProcessor
       Parser.GameMenuCommandParser
       Parser.MainMenuCommandParser
       Parser.SearchMenuCommandParser
@@ -42,6 +41,7 @@ library
       Util.ParseUtil
       Util.WordUtil
       WordGenerator
+      WordProcessor
   other-modules:
       Paths_wordle_solver
   autogen-modules:
