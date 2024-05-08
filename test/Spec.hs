@@ -4,6 +4,7 @@ import Unit.Util.ParseUtilTest (testParseUtil)
 import Unit.Parser.MainMenuCommandParserTest
 import Unit.Parser.GameMenuCommandParserTest (testGameMenuCommandParser)
 import Unit.Parser.SearchMenuCommandParser (testSearchMenuCommandParser)
+import Unit.Processor.WordProcessorTest (testWordProcessor)
 
 tests :: TestTree
 tests = testGroup "Wordle solver tests" [
@@ -11,7 +12,8 @@ tests = testGroup "Wordle solver tests" [
     testParseUtil,
     testMainMenuCommandParser,
     testGameMenuCommandParser,
-    testSearchMenuCommandParser
+    testSearchMenuCommandParser,
+    testWordProcessor
     ]
 
 main :: IO ()

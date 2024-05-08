@@ -83,6 +83,7 @@ test-suite wordle-solver-test
       Unit.Parser.GameMenuCommandParserTest
       Unit.Parser.MainMenuCommandParserTest
       Unit.Parser.SearchMenuCommandParser
+      Unit.Processor.WordProcessorTest
       Unit.Util.ParseUtilTest
       Unit.Util.WordUtilTest
       Paths_wordle_solver
