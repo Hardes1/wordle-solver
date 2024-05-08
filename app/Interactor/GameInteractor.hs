@@ -13,8 +13,8 @@ import Data.GameMenuCommand (Command(..))
 import Printer.GameMenuPrinter (printHelp, printWelcomeMessage, printGameStatus, printHUD)
 import Printer.WordDiffPrinter (printWordDiff)
 import Printer.CommonPrinter (printParseError)
-import WordProcessor (calculateDiff)
-import WordGenerator (genGuessWord)
+import Processor.WordProcessor (calculateDiff)
+import Generator.WordGenerator (genGuessWord)
 import Util.ParseUtil (trim)
 
 

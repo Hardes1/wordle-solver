@@ -2,7 +2,7 @@ module Unit.Processor.WordProcessorTest(testWordProcessor) where
 import Test.Tasty (TestTree, testGroup)
 import Data.GameState (WordDiff (WordDiff), Color (Red, Green, Yellow))
 import Test.Tasty.HUnit (testCase, (@?=), assertFailure)
-import WordProcessor (calculateDiff)
+import Processor.WordProcessor (calculateDiff)
 import Control.Exception (ErrorCall (ErrorCall))
 import Control.Exception.Base (try)
 

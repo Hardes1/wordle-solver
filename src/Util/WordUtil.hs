@@ -1,7 +1,7 @@
 module Util.WordUtil(isKnownWord, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove, maxGuessSteps, isConsistOfLetters, isValidLength) where
 import Data.WordError(Error(..))
 import Data.GameState (WordDiff (WordDiff), Color (..))
-import WordGenerator (getLaWordList, getTaWordList)
+import Generator.WordGenerator (getLaWordList, getTaWordList)
 import Data.Char (isAlpha)
 
 maxGuessSteps :: Int

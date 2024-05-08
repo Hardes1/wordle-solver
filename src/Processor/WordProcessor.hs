@@ -1,4 +1,4 @@
-module WordProcessor (calculateDiff, getWordsByWordDiffList) where
+module Processor.WordProcessor (calculateDiff, getWordsByWordDiffList) where
 
 import Control.Monad.Trans.State (State, evalState, get, modify)
 import Data.Char (toLower)

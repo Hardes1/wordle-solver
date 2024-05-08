@@ -1,4 +1,4 @@
-module WordGenerator(genGuessWord, getLaWordList, getTaWordList) where
+module Generator.WordGenerator(genGuessWord, getLaWordList, getTaWordList) where
 import System.Random (randomRIO)
 
 genGuessWord :: IO String
