@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-unused-do-bind #-}
 module Interactor.SearchInteractor(startSearch) where
 import Control.Monad (MonadPlus(mzero), forever)
 import Printer.SearchMenuPrinter(printWelcomeMessage, printHelp, printFilteredWords, printBackExtraInfo)
