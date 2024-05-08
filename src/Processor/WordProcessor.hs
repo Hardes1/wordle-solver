@@ -35,15 +35,12 @@ isWordSatisfyColor (wordChr : tWord) ((col, patternChr) : tcol) currentCol condP
   cnt <- get
   let condOne = isContainsAtLeastOneLetter cnt patternChr
       condTwo = areCharsEqual wordChr patternChr
-  if col == currentCol && condPred condOne condTwo
-    then go
-    else
-      if col == currentCol
-        then return False
-        else isWordSatisfyColor tWord tcol currentCol condPred trans
+  if col == currentCol && condPred condOne condTwo then go
+  else if col == currentCol then return False
+  else isWordSatisfyColor tWord tcol currentCol condPred trans
   where
     go = do
-      modify (trans wordChr)
+      modify (trans patternChr)
       isWordSatisfyColor tWord tcol currentCol condPred trans
 isWordSatisfyColor [] [] _ _ _ = return True
 isWordSatisfyColor _ _ _ _ _ = error "Illegal state exception both word and pattern were different length"
