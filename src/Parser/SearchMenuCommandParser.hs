@@ -1,24 +1,21 @@
 {-# LANGUAGE InstanceSigs #-}
-
-module Parser.SearchMenuCommandParser (parse, ParseError (..), ErrorType(..)) where
+module Parser.SearchMenuCommandParser (parse, ParseError (..)) where
 
 import Data.Char (toLower)
 import Data.SearchMenuCommand (Command (..))
-import Util.WordUtil (isConsistOfLetters, isValidLength)
 import Data.GameState (Color(Red, Yellow, Green), WordDiff (WordDiff))
+import qualified Data.WordError as WordError(ParseError(..))
+import qualified Data.ColorError as ColorError(ParseError(..))
+import Util.ParseUtil (isCorrectWord, isCorrectColorList)
 
-data ErrorType = UnknownCommand | InvalidWordLength | InvalidColorLength | BadWordCharacter | BadColorCharacter deriving (Eq, Show)
-
-data ParseError = ParseError ErrorType String | InvalidNumberOfWords Int deriving Eq
+data ParseError = WordParseError WordError.ParseError String | ColorParseError ColorError.ParseError String | UnknownCommand String | InvalidNumberOfWords Int deriving Eq
 
 instance Show ParseError where
   show :: ParseError -> String
-  show (ParseError UnknownCommand cmd) = "Unsupported command: '" <> cmd <> "'."
-  show (ParseError InvalidWordLength word) = "Word should have length 5. Word '" <> word <> "' has length " <> show (length word) <> "."
-  show (ParseError InvalidColorLength color) = "Word should have length 5. Word '" <> color <> "' has length " <> show (length color) <> "."
-  show (ParseError BadWordCharacter _) = "Word should only consist of alphabetical symbols."
-  show (ParseError BadColorCharacter _) = "Color should consist only of Symbols R|G|B|r|g|b."
+  show (UnknownCommand cmd) = "Unsupported command: '" <> cmd <> "'."
   show (InvalidNumberOfWords len) = "Number of words should be two. Actual got " <> show len <> "."
+  show (WordParseError err word) = "Parse error: " <> "Word '" <> word <> "'. "
+  show (ColorParseError err word) = "Parse error: " <> "Color '" <> word <> "'. "
 
 parse :: String -> Either ParseError Command
 parse ":search" = Right Search
@@ -26,11 +23,11 @@ parse ":back" = Right Back
 parse ":help" = Right Help
 parse ":reset" = Right Reset
 parse ":status" = Right Status
-parse s@(':' : _) = Left $ ParseError UnknownCommand s
+parse s@(':' : _) = Left $ UnknownCommand s
 parse input = do
   let wordList = words input
   (word, colorList) <- getWordAndColor wordList
-  isCorrectWord word >> isCorrectColorList colorList
+  wrapWordError isCorrectWord word >> wrapParseError isCorrectColorList colorList
   return $ NewWord $ WordDiff (combineWords word colorList)
   where
     combineWords = zipWith (\letter color
@@ -45,21 +42,12 @@ getWordAndColor :: [String] -> Either ParseError (String, String)
 getWordAndColor [a, b] = Right (a, b)
 getWordAndColor arr = Left $ InvalidNumberOfWords (length arr)
 
-isCorrectWord :: String -> Either ParseError ()
-isCorrectWord word
-  | not $ isValidLength word = Left $ ParseError InvalidWordLength word
-  | not $ isConsistOfLetters word = Left $ ParseError BadWordCharacter word
-  | otherwise = return ()
+wrapWordError :: (String -> Either WordError.ParseError ()) -> String -> Either ParseError ()
+wrapWordError f word = case f word of
+  Left err -> Left $ WordParseError err word
+  _ -> Right ()
 
-isCorrectColorList :: String -> Either ParseError ()
-isCorrectColorList colorList
-  | not $ isValidLength colorList = Left $ ParseError InvalidColorLength colorList
-  | not $ isConsistsOfOnlyAllowedColors colorList = Left $ ParseError BadColorCharacter colorList
-  | otherwise = return ()
-
-isConsistsOfOnlyAllowedColors :: String -> Bool
-isConsistsOfOnlyAllowedColors (chr : rst) =
-  ((lchr == 'r') || (lchr == 'y') || (lchr == 'g')) && isConsistsOfOnlyAllowedColors rst
-  where
-    lchr = toLower chr
-isConsistsOfOnlyAllowedColors [] = True
+wrapParseError :: (String -> Either ColorError.ParseError ()) -> String -> Either ParseError ()
+wrapParseError f word = case f word of
+  Left err -> Left $ ColorParseError err word
+  _ -> Right ()

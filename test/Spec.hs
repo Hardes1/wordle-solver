@@ -3,7 +3,7 @@ import Unit.Util.WordUtilTest (testWordUtil)
 import Unit.Util.ParseUtilTest (testParseUtil)
 import Unit.Parser.MainMenuCommandParserTest
 import Unit.Parser.GameMenuCommandParserTest (testGameMenuCommandParser)
-import Unit.Parser.SearchMenuCommandParser (testSearchMenuCommandParser)
+import Unit.Parser.SearchMenuCommandParserTest (testSearchMenuCommandParser)
 import Unit.Processor.WordProcessorTest (testWordProcessor)
 
 tests :: TestTree

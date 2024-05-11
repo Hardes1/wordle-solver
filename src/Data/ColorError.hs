@@ -1,7 +1,7 @@
 {-# LANGUAGE InstanceSigs #-}
 module Data.ColorError(ParseError(..)) where
 
-data ParseError = InvalidColorLength | BadColorCharacter
+data ParseError = InvalidColorLength | BadColorCharacter deriving Eq
 
 instance Show ParseError where
     show :: ParseError -> String

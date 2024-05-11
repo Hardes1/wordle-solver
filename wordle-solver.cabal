@@ -86,7 +86,7 @@ test-suite wordle-solver-test
   other-modules:
       Unit.Parser.GameMenuCommandParserTest
       Unit.Parser.MainMenuCommandParserTest
-      Unit.Parser.SearchMenuCommandParser
+      Unit.Parser.SearchMenuCommandParserTest
       Unit.Processor.WordProcessorTest
       Unit.Util.ParseUtilTest
       Unit.Util.WordUtilTest
