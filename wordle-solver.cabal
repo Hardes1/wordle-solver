@@ -25,12 +25,14 @@ source-repository head
 
 library
   exposed-modules:
+      Data.ComputeMenuCommand
       Data.GameMenuCommand
       Data.GameState
       Data.MainMenuCommand
       Data.SearchMenuCommand
       Data.WordError
       Generator.WordGenerator
+      Parser.ComputeMenuCommandParser
       Parser.GameMenuCommandParser
       Parser.MainMenuCommandParser
       Parser.SearchMenuCommandParser
@@ -59,6 +61,7 @@ library
 executable wordle-solver-exe
   main-is: Main.hs
   other-modules:
+      Interactor.ComputeInteractor
       Interactor.GameInteractor
       Interactor.MainInteractor
       Interactor.SearchInteractor

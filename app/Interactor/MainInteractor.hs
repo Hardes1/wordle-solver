@@ -7,6 +7,7 @@ import Control.Monad (forever, MonadPlus (mzero))
 import Data.MainMenuCommand (Command (..))
 import Interactor.GameInteractor(startGame)
 import Interactor.SearchInteractor(startSearch)
+import Interactor.ComputeInteractor(startCompute)
 import Parser.MainMenuCommandParser(parse)
 import Util.ParseUtil (trim)
 
@@ -26,7 +27,7 @@ loop = forever $ do
 handleCommand :: Command -> MaybeT IO ()
 handleCommand Game = lift startGame
 handleCommand Search = lift startSearch
-handleCommand Compute = lift $ putStrLn "Not implemented yet!"
+handleCommand Compute = lift startCompute
 handleCommand Help = lift printHelp
 handleCommand Quit = mzero
 
