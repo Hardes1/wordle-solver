@@ -10,9 +10,9 @@ import Data.GameState(GameState(..), WordDiff(..), GameStatus(..), IncorrectStat
 import Util.WordUtil(isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove, isKnownWord)
 import Parser.GameMenuCommandParser(parse)
 import Data.GameMenuCommand (Command(..))
-import Printer.GameMenuPrinter (printHelp, printWelcomeMessage, printGameStatus, printHUD)
+import Printer.GameMenuPrinter (printHelp, printGameStatus, printHUD)
 import Printer.WordDiffPrinter (printWordDiff)
-import Printer.CommonPrinter (printParseError)
+import Printer.CommonPrinter (printWelcomeMessage, printParseError)
 import Processor.WordProcessor (calculateDiff)
 import Generator.WordGenerator (genGuessWord)
 import Util.ParseUtil (trim)
@@ -21,7 +21,7 @@ import Util.ParseUtil (trim)
 
 startGame :: IO ()
 startGame = do
-    printWelcomeMessage
+    printWelcomeMessage "wordle game"
     printHelp
     word <- genGuessWord
     env <- execStateT (runMaybeT loop) (CorrectState InProgress [] word)

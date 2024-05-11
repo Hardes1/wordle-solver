@@ -1,11 +1,10 @@
-module Printer.SearchMenuPrinter (printBackExtraInfo, printWelcomeMessage, printHelp, printFilteredWords) where
+module Printer.SearchMenuPrinter (printHelp, printFilteredWords) where
 
 import Data.GameState (Color (..), WordDiff (..))
 import Printer.WordDiffPrinter (printWordDiff, printWordDiffList)
 import Data.Foldable (traverse_)
 
-printWelcomeMessage :: IO ()
-printWelcomeMessage = putStrLn "Welcome to the word searching by clue set!"
+
 
 printSearchFormat :: IO ()
 printSearchFormat = do
@@ -28,6 +27,3 @@ printFilteredWords wordDiffList wordList = do
   printWordDiffList wordDiffList
   putStrLn $ "Words which satisfy pattern (total number of entries " <> show (length wordList) <> "):"
   traverse_ putStrLn wordList
-
-printBackExtraInfo :: IO ()
-printBackExtraInfo = putStrLn "You are leaving search menu!"

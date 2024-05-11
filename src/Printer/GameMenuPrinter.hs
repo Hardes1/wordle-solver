@@ -1,4 +1,4 @@
-module Printer.GameMenuPrinter(printHelp, printWelcomeMessage, printGameStatus, printHUD) where
+module Printer.GameMenuPrinter(printHelp, printGameStatus, printHUD) where
 import Data.GameState (WordDiff(..), GameState (..), GameStatus (..),  IncorrectStatus(..))
 import Printer.WordDiffPrinter(printWordDiffList)
 import Util.WordUtil (maxGuessSteps)
@@ -11,10 +11,6 @@ printHelp = do
      putStrLn ":guess - shows current guesses"
      putStrLn ":help - prints this menu again"
      putStrLn ":back - goes back to main menu"
-
-printWelcomeMessage :: IO ()
-printWelcomeMessage = putStrLn "Welcome to the wordle game!"
-
 
 printProgress :: [WordDiff] -> IO ()
 printProgress wordDiffList = do

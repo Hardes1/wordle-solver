@@ -8,7 +8,7 @@ data ParseError = WordParseError WordError.ParseError String | UnknownCommand St
 
 instance Show ParseError where
     show :: ParseError -> String
-    show (WordParseError err word) = "Parse error: " <> "Word '" <> word <> "'. " <> show err
+    show (WordParseError err word) = "Word '" <> word <> "'. " <> show err
     show (UnknownCommand cmd) =  "Unsupported command: '" <> cmd <> "'."
 
 parse :: String -> Either ParseError Command

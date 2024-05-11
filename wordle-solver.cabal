@@ -38,6 +38,7 @@ library
       Parser.MainMenuCommandParser
       Parser.SearchMenuCommandParser
       Printer.CommonPrinter
+      Printer.ComputeMenuPrinter
       Printer.GameMenuPrinter
       Printer.MainMenuPrinter
       Printer.SearchMenuPrinter

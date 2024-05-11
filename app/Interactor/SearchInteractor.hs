@@ -1,14 +1,14 @@
 {-# OPTIONS_GHC -Wno-unused-do-bind #-}
 module Interactor.SearchInteractor(startSearch) where
 import Control.Monad (MonadPlus(mzero), forever)
-import Printer.SearchMenuPrinter(printWelcomeMessage, printHelp, printFilteredWords, printBackExtraInfo)
+import Printer.SearchMenuPrinter(printHelp, printFilteredWords)
 import Control.Monad.Trans.Maybe (MaybeT (runMaybeT))
 import Control.Monad.Trans.State.Lazy (execStateT)
 import Control.Monad.Trans.State (StateT, get, modify)
 import Control.Monad.Trans.Class (MonadTrans(lift))
 import Data.SearchMenuCommand(Command(..))
 import Data.GameState(WordDiff(..))
-import Printer.CommonPrinter(printExit, printParseError)
+import Printer.CommonPrinter(printWelcomeMessage, printExit, printParseError, printBackExtraInfo)
 import Parser.SearchMenuCommandParser(parse)
 import Printer.WordDiffPrinter(printWordDiffList)
 import Generator.WordGenerator (getLaWordList)
@@ -17,7 +17,7 @@ import Util.ParseUtil (trim)
 
 startSearch :: IO ()
 startSearch = do
-    printWelcomeMessage
+    printWelcomeMessage "searching word by the set of clues"
     printHelp
     runMaybeT (execStateT loop [])
     printExit
@@ -43,5 +43,5 @@ handleCommand Status = do
     env <- get
     lift . lift $ printWordDiffList $ reverse env
 handleCommand Back = do
-    lift . lift $ printBackExtraInfo
+    lift . lift $ printBackExtraInfo "search"
     mzero
