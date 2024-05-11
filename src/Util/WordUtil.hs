@@ -1,5 +1,5 @@
 module Util.WordUtil(isKnownWord, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove, maxGuessSteps, isConsistOfLetters, isValidLength) where
-import Data.WordError(Error(..))
+import Data.WordError(LogicError(..))
 import Data.GameState (WordDiff (WordDiff), Color (..))
 import Generator.WordGenerator (getLaWordList, getTaWordList)
 import Data.Char (isAlpha, toLower)
@@ -7,7 +7,7 @@ import Data.Char (isAlpha, toLower)
 maxGuessSteps :: Int
 maxGuessSteps = 6
 
-isKnownWord :: String -> IO (Either Error ())
+isKnownWord :: String -> IO (Either LogicError ())
 isKnownWord word = do
     let lowerWord = map toLower word
     taList <- getLaWordList

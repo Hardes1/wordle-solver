@@ -1,23 +1,21 @@
 {-# LANGUAGE InstanceSigs #-}
-module Parser.GameMenuCommandParser(parse, ParseError(..), ErrorType(..)) where
+module Parser.GameMenuCommandParser(parse, ParseError(..)) where
 import Data.GameMenuCommand(Command(..))
 import Util.WordUtil (isConsistOfLetters, isValidLength)
+import qualified Data.WordError as WordError(ParseError(..))
 
-data ErrorType = InvalidLength | BadCharacter | UnknownCommand deriving (Eq, Show)
-
-data ParseError = ParseError ErrorType String deriving (Eq)
+data ParseError = WordParseError WordError.ParseError String | UnknownCommand String deriving (Eq)
 
 instance Show ParseError where
     show :: ParseError -> String
-    show (ParseError InvalidLength word) = "Word should have length 5. Word '" <> word <> "' has length " <> show (length word) <> "."
-    show (ParseError BadCharacter _) = "Word should only consist of alphabetical symbols."
-    show (ParseError UnknownCommand cmd) =  "Unsupported command: '" <> cmd <> "'."
+    show (WordParseError err word) = "Parse error: " <> "Word '" <> word <> "'" <> show err
+    show (UnknownCommand cmd) =  "Unsupported command: '" <> cmd <> "'."
 
 parse :: String -> Either ParseError Command
 parse ":back" = Right Back
 parse ":help" = Right Help
 parse ":guess" = Right Guess
-parse s@(':':_) = Left $ ParseError UnknownCommand s
+parse s@(':':_) = Left $ UnknownCommand s
 parse word = do
     isCorrectWord word
     return $ Word word
@@ -26,6 +24,6 @@ parse word = do
 
 isCorrectWord :: String -> Either ParseError ()
 isCorrectWord word 
-    | not $ isValidLength word = Left $ ParseError InvalidLength word
-    | not $ isConsistOfLetters word = Left $ ParseError BadCharacter word
+    | not $ isValidLength word = Left $ WordParseError WordError.InvalidWordLength word
+    | not $ isConsistOfLetters word = Left $ WordParseError WordError.BadWordCharacter word
     | otherwise = return ()
