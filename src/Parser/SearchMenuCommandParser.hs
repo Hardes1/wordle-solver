@@ -14,8 +14,8 @@ instance Show ParseError where
   show :: ParseError -> String
   show (UnknownCommand cmd) = "Unsupported command: '" <> cmd <> "'."
   show (InvalidNumberOfWords len) = "Number of words should be two. Actual got " <> show len <> "."
-  show (WordParseError err word) = "Parse error: " <> "Word '" <> word <> "'. "
-  show (ColorParseError err word) = "Parse error: " <> "Color '" <> word <> "'. "
+  show (WordParseError err word) = "Parse error: " <> "Word '" <> word <> "'. " <> show err
+  show (ColorParseError err col) = "Parse error: " <> "Color '" <> col <> "'. " <> show err
 
 parse :: String -> Either ParseError Command
 parse ":search" = Right Search

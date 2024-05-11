@@ -1,7 +1,6 @@
 {-# LANGUAGE InstanceSigs #-}
 module Parser.GameMenuCommandParser(parse, ParseError(..)) where
 import Data.GameMenuCommand(Command(..))
-import Util.WordUtil (isConsistOfLetters, isValidLength)
 import qualified Data.WordError as WordError(ParseError(..))
 import Util.ParseUtil (isCorrectWord)
 
