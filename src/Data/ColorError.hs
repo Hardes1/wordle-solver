@@ -5,5 +5,5 @@ data ParseError = InvalidColorLength | BadColorCharacter deriving Eq
 
 instance Show ParseError where
     show :: ParseError -> String
-    show InvalidColorLength = "Invalid color length!"
-    show BadColorCharacter = "Bad color character!"
+    show InvalidColorLength = "Color should have length 5."
+    show BadColorCharacter = "Color should only consist of alphabetical symbols."
