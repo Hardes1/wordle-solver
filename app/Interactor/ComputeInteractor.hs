@@ -2,7 +2,7 @@
 module Interactor.ComputeInteractor(startCompute) where
 import Control.Monad (MonadPlus(mzero), forever)
 import Printer.ComputeMenuPrinter(printHelp, printDictionary, printComputeResult, printNewWord)
-import Printer.CommonPrinter(printWelcomeMessage, printExit, printBackExtraInfo, printParseError, printClearItems)
+import Printer.CommonPrinter(printWelcomeMessage, printExit, printBackExtraInfo, printParseError, printClearItems, printNoItems)
 import Control.Monad.Trans.Maybe (MaybeT (runMaybeT))
 import Control.Monad.Trans.State.Lazy (execStateT)
 import Control.Monad.Trans.State (StateT, get, modify)
@@ -41,8 +41,10 @@ handleCommand Compute = do
     taDict <- lift . lift $ getTaWordList
     let allPossibleWords = laDict ++ taDict
         bestWord = findBestWord allPossibleWords env
-        wordDiffList = getWordDiffListByWords bestWord env
-    lift . lift $ printComputeResult bestWord (reverse wordDiffList)
+    case bestWord of
+        Just val -> lift . lift $ printComputeResult val (reverse $ getWordDiffListByWords val env)
+        _ -> lift . lift $ printNoItems "words"
+    
 handleCommand Reset = do 
     modify (const [])
     lift . lift $ printClearItems "words"

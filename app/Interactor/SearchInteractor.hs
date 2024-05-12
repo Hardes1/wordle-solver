@@ -8,7 +8,7 @@ import Control.Monad.Trans.State (StateT, get, modify)
 import Control.Monad.Trans.Class (MonadTrans(lift))
 import Data.SearchMenuCommand(Command(..))
 import Data.GameState(WordDiff(..))
-import Printer.CommonPrinter(printWelcomeMessage, printExit, printParseError, printBackExtraInfo, printClearItems)
+import Printer.CommonPrinter(printWelcomeMessage, printExit, printParseError, printBackExtraInfo, printClearItems, printNoItems)
 import Parser.SearchMenuCommandParser(parse)
 import Generator.WordGenerator (getLaWordList)
 import Processor.WordProcessor (getWordsByWordDiffList)
@@ -34,7 +34,9 @@ handleCommand Search = do
     env <- get
     availableWords <- lift . lift $ getLaWordList
     let filteredWordList = getWordsByWordDiffList availableWords env
-    lift . lift $ printFilteredWords (reverse env) (reverse filteredWordList)
+    case filteredWordList of
+        Just val -> lift . lift $ printFilteredWords (reverse env) (reverse val)
+        _ -> lift . lift $ printNoItems "clues"
 handleCommand (NewWord wordDiff) = do
     modify (wordDiff :)
     lift . lift $ printNewClue wordDiff

@@ -7,17 +7,18 @@ import Data.Map.Strict (adjust, (!?), union)
 import Util.WordUtil(areCharsEqual)
 import qualified Data.Map.Strict as Map (Map, fromListWith, fromList, unionWith, findWithDefault)
 
-findBestWord :: [String] -> [String] -> String
+findBestWord :: [String] -> [String] -> Maybe String
 findBestWord searchDict inputDict =
   let transformedWords = map (\candidate -> (candidate, getColorCountForDict candidate inputDict)) searchDict
       h = head transformedWords
-  in fst $ foldl (\x y -> 
+  in if not $ null inputDict then Just $ fst $ foldl (\x y ->
     if compareWords x y == LT then y else x
     ) h transformedWords
+    else Nothing
 
 
 compareWords :: (String, Map.Map Color Int) -> (String, Map.Map Color Int) -> Ordering
-compareWords (_, fiDict) (_, seDict) =compare (scoreMap fiDict) (scoreMap seDict)
+compareWords (_, fiDict) (_, seDict) = compare (scoreMap fiDict) (scoreMap seDict)
     where
       scoreMap m = foldr (\color acc -> acc + (Map.findWithDefault 0 color m * weight color)) 0 [Green, Yellow, Red]
       weight Green  = 50
@@ -43,8 +44,8 @@ getColorCountForWordDiff wordDiff =
   Map.fromListWith (+) [(col, 1) | (col, _) <- diffList wordDiff] `union` getEmptyCountColorMap
 
 
-getWordsByWordDiffList :: [String] -> [WordDiff] -> [String]
-getWordsByWordDiffList wordList wordDiffList = filter (`isWordSatisfyPattern` wordDiffList) wordList
+getWordsByWordDiffList :: [String] -> [WordDiff] -> Maybe [String]
+getWordsByWordDiffList wordList wordDiffList = if null wordDiffList then Nothing else Just $ filter (`isWordSatisfyPattern` wordDiffList) wordList
 
 isWordSatisfyPattern :: String -> [WordDiff] -> Bool
 isWordSatisfyPattern word wordDiffList =

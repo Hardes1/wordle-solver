@@ -1,4 +1,4 @@
-module Printer.CommonPrinter(printExit, printParseError, printBackExtraInfo, printWelcomeMessage, printClearItems) where
+module Printer.CommonPrinter(printExit, printParseError, printBackExtraInfo, printWelcomeMessage, printClearItems, printNoItems) where
 
 printWelcomeMessage ::  String -> IO ()
 printWelcomeMessage place = putStrLn $ "Welcome to the " <> place <> "!"
@@ -14,3 +14,6 @@ printBackExtraInfo place = putStrLn $ "You are leaving " <> place <> " menu!"
 
 printClearItems :: String -> IO ()
 printClearItems itemName = putStrLn $ "All " <> itemName <> " were deleted!"
+
+printNoItems :: String -> IO ()
+printNoItems itemName = putStrLn $ "There are no " <> itemName <> " in the list!"
