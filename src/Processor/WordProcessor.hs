@@ -1,10 +1,48 @@
-module Processor.WordProcessor (calculateDiff, getWordsByWordDiffList) where
+module Processor.WordProcessor (calculateDiff, getWordsByWordDiffList, getWordDiffListByWords, findBestWord) where
 
 import Control.Monad.Trans.State (State, evalState, get, modify)
 import Data.Char (toLower)
 import Data.GameState (Color (..), WordDiff (..))
-import Data.Map.Strict (adjust, (!?))
-import qualified Data.Map.Strict as Map (Map, fromListWith)
+import Data.Map.Strict (adjust, (!?), union)
+import qualified Data.Map.Strict as Map (Map, fromListWith, fromList, unionWith, findWithDefault)
+
+findBestWord :: [String] -> [String] -> String
+findBestWord searchDict inputDict =
+  let transformedWords = map (\candidate -> (candidate, getColorCountForDict candidate inputDict)) searchDict
+      h = head transformedWords
+  in fst $ foldl getBetterWord h transformedWords
+
+
+
+getBetterWord :: (String, Map.Map Color Int) -> (String, Map.Map Color Int) -> (String, Map.Map Color Int)
+getBetterWord fi@(_, fiDict) se@(_, seDict) =
+    let scoreFi = scoreMap fiDict
+        scoreSe = scoreMap seDict
+    in if scoreFi >= scoreSe then fi else se
+    where
+      scoreMap m = foldr (\color acc -> acc + (Map.findWithDefault 0 color m * weight color)) 0 [Green, Yellow, Red]
+      weight Green  = 50
+      weight Yellow = 20
+      weight Red    = 2
+
+getColorCountForDict :: String -> [String] -> Map.Map Color Int
+getColorCountForDict searchWord inputDict =
+  let wordDiffList = getWordDiffListByWords searchWord inputDict
+  in foldl (\x y ->
+    Map.unionWith (+) x (getColorCountForWordDiff y)
+  ) getEmptyCountColorMap wordDiffList
+
+
+getWordDiffListByWords :: String -> [String] -> [WordDiff]
+getWordDiffListByWords base = map (calculateDiff base)
+
+getEmptyCountColorMap :: Map.Map Color Int
+getEmptyCountColorMap = Map.fromList [(Red, 0), (Yellow, 0), (Green, 0)]
+
+getColorCountForWordDiff :: WordDiff -> Map.Map Color Int
+getColorCountForWordDiff wordDiff =
+  Map.fromListWith (+) [(col, 1) | (col, _) <- diffList wordDiff] `union` getEmptyCountColorMap
+
 
 getWordsByWordDiffList :: [String] -> [WordDiff] -> [String]
 getWordsByWordDiffList wordList wordDiffList = filter (`isWordSatisfyPattern` wordDiffList) wordList
@@ -48,7 +86,7 @@ isWordSatisfyColor _ _ _ _ _ = error "Illegal state exception both word and patt
 calculateDiff :: String -> String -> WordDiff
 calculateDiff expected actual =
   let actualTransformed = map toLower actual
-      letterCount = Map.fromListWith (+) [(x, 1) | (x, y) <- zip expected actual, x /= y]
+      letterCount = Map.fromListWith (+) [(x, 1) | (x, y) <- zip expected actual, not (areCharsEqual x y)]
    in evalState (calculateDiffInner expected actualTransformed) (letterCount, [])
 
 calculateDiffInner :: String -> String -> State (Map.Map Char Int, [(Color, Char)]) WordDiff

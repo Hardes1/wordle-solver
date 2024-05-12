@@ -1,7 +1,7 @@
 {-# LANGUAGE InstanceSigs #-}
 module Data.GameState(Color(..), GameState(..), WordDiff(..), GameStatus(..),  IncorrectStatus(..)) where
 
-data Color = Green | Yellow | Red deriving (Show, Eq)
+data Color = Green | Yellow | Red deriving (Ord, Show, Eq)
 
 newtype WordDiff = WordDiff { diffList :: [(Color, Char)] } deriving (Show, Eq)
 

@@ -1,5 +1,7 @@
-module Printer.ComputeMenuPrinter(printHelp, printDictionary) where
+module Printer.ComputeMenuPrinter(printHelp, printDictionary, printComputeResult) where
 import Data.Foldable (traverse_)
+import Data.GameState (WordDiff)
+import Printer.WordDiffPrinter (printWordDiffList)
 
 printHelp :: IO ()
 printHelp = do
@@ -9,6 +11,12 @@ printHelp = do
     putStrLn ":reset - clears dictionary"
     putStrLn ":help - prints this menu again"
     putStrLn ":back - goes back to the main menu"
+
+printComputeResult :: String -> [WordDiff] -> IO ()
+printComputeResult bestWord wordDiffList = do
+    putStrLn $ "The best word is " <> bestWord <> "."
+    putStrLn "With the following matches: "
+    printWordDiffList wordDiffList
 
 printDictionary :: [String] -> IO ()
 printDictionary dict = do
