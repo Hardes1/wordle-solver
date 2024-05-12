@@ -3,7 +3,7 @@ module Unit.Util.WordUtilTest (testWordUtil) where
 import Data.GameState (Color (Green, Red, Yellow), WordDiff (WordDiff))
 import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.HUnit (testCase, (@?=))
-import Util.WordUtil (isConsistOfLetters, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove, isValidLength, maxGuessSteps)
+import Util.WordUtil (isConsistOfLetters, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove, isValidLength, maxGuessSteps, areCharsEqual)
 
 testWordUtil :: TestTree
 testWordUtil =
@@ -14,7 +14,8 @@ testWordUtil =
       testValidLength,
       testLastGuess,
       testNumberOfMovesExceeded,
-      testPossibleToMakeMove
+      testPossibleToMakeMove,
+      testAreCharsEqual
     ]
 
 testMaxGuessSteps :: TestTree
@@ -79,6 +80,19 @@ testPossibleToMakeMove =
       testCase "5 -> True" $ isPossibleToMakeMove (replicate 5 (WordDiff [])) @?= True,
       testCase "6 -> False" $ isPossibleToMakeMove (replicate 6 (WordDiff [])) @?= False
     ]
+
+testAreCharsEqual :: TestTree
+testAreCharsEqual = testGroup "Are chars equal test" [
+  testCase "'a' == 'a'" $ areCharsEqual 'a' 'a' @?= True,
+  testCase "'A' == 'A'" $ areCharsEqual 'A' 'A' @?= True,
+  testCase "(Ignore case) 'a' == 'A'" $ areCharsEqual 'a' 'A' @?= True,
+  testCase "(Order doesn't matter) 'A' == 'a'" $ areCharsEqual 'A' 'a' @?= True,
+  testCase "'a' != 'b'"   $ areCharsEqual 'a' 'b' @?= False,
+  testCase "'A' != 'B'"   $ areCharsEqual 'a' 'b' @?= False,
+  testCase "'b' != 'a'"   $ areCharsEqual 'b' 'a' @?= False,
+  testCase "'a' != 'B'"   $ areCharsEqual 'a' 'B' @?= False,
+  testCase "'A' != 'b'"   $ areCharsEqual 'a' 'B' @?= False
+  ]
 
 genWordDiff :: String -> WordDiff
 genWordDiff s = WordDiff $ map toColorPair s
