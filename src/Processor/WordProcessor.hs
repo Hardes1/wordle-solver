@@ -4,21 +4,20 @@ import Control.Monad.Trans.State (State, evalState, get, modify)
 import Data.Char (toLower)
 import Data.GameState (Color (..), WordDiff (..))
 import Data.Map.Strict (adjust, (!?), union)
+import Util.WordUtil(areCharsEqual)
 import qualified Data.Map.Strict as Map (Map, fromListWith, fromList, unionWith, findWithDefault)
 
 findBestWord :: [String] -> [String] -> String
 findBestWord searchDict inputDict =
   let transformedWords = map (\candidate -> (candidate, getColorCountForDict candidate inputDict)) searchDict
       h = head transformedWords
-  in fst $ foldl getBetterWord h transformedWords
+  in fst $ foldl (\x y -> 
+    if compareWords x y == LT then y else x
+    ) h transformedWords
 
 
-
-getBetterWord :: (String, Map.Map Color Int) -> (String, Map.Map Color Int) -> (String, Map.Map Color Int)
-getBetterWord fi@(_, fiDict) se@(_, seDict) =
-    let scoreFi = scoreMap fiDict
-        scoreSe = scoreMap seDict
-    in if scoreFi >= scoreSe then fi else se
+compareWords :: (String, Map.Map Color Int) -> (String, Map.Map Color Int) -> Ordering
+compareWords (_, fiDict) (_, seDict) =compare (scoreMap fiDict) (scoreMap seDict)
     where
       scoreMap m = foldr (\color acc -> acc + (Map.findWithDefault 0 color m * weight color)) 0 [Green, Yellow, Red]
       weight Green  = 50
@@ -46,9 +45,6 @@ getColorCountForWordDiff wordDiff =
 
 getWordsByWordDiffList :: [String] -> [WordDiff] -> [String]
 getWordsByWordDiffList wordList wordDiffList = filter (`isWordSatisfyPattern` wordDiffList) wordList
-
-areCharsEqual :: Char -> Char -> Bool
-areCharsEqual a b = toLower a == toLower b
 
 isWordSatisfyPattern :: String -> [WordDiff] -> Bool
 isWordSatisfyPattern word wordDiffList =

@@ -1,4 +1,4 @@
-module Util.WordUtil(isKnownWord, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove, maxGuessSteps, isConsistOfLetters, isValidLength) where
+module Util.WordUtil(isKnownWord, isLastGuessFull, isNumberOfMovesExceeded, isPossibleToMakeMove, maxGuessSteps, isConsistOfLetters, isValidLength, areCharsEqual) where
 import Data.WordError(LogicError(..))
 import Data.GameState (WordDiff (WordDiff), Color (..))
 import Generator.WordGenerator (getLaWordList, getTaWordList)
@@ -29,3 +29,6 @@ isConsistOfLetters = all isAlpha
 
 isValidLength :: String -> Bool
 isValidLength word = length word == 5
+
+areCharsEqual :: Char -> Char -> Bool
+areCharsEqual a b = toLower a == toLower b
