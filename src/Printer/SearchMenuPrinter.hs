@@ -1,4 +1,4 @@
-module Printer.SearchMenuPrinter (printHelp, printFilteredWords) where
+module Printer.SearchMenuPrinter (printHelp, printFilteredWords, printNewClue, printAllClues) where
 
 import Data.GameState (Color (..), WordDiff (..))
 import Printer.WordDiffPrinter (printWordDiff, printWordDiffList)
@@ -21,9 +21,18 @@ printHelp = do
   putStrLn ":help - prints this menu again"
   putStrLn ":back - goes back to the main menu"
 
-printFilteredWords :: [WordDiff] -> [String] -> IO ()
-printFilteredWords wordDiffList wordList = do
+printAllClues :: [WordDiff] -> IO ()
+printAllClues wordDiffList = do
   putStrLn "Current pattern set is:"
   printWordDiffList wordDiffList
+
+printFilteredWords :: [WordDiff] -> [String] -> IO ()
+printFilteredWords wordDiffList wordList = do
+  printAllClues wordDiffList
   putStrLn $ "Words which satisfy pattern (total number of entries " <> show (length wordList) <> "):"
   traverse_ putStrLn wordList
+
+printNewClue :: WordDiff -> IO ()
+printNewClue wordDiff = do
+  putStrLn "New clue was added successfully:" 
+  printWordDiff wordDiff

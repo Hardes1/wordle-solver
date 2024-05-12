@@ -1,8 +1,8 @@
 {-# OPTIONS_GHC -Wno-unused-do-bind #-}
 module Interactor.ComputeInteractor(startCompute) where
 import Control.Monad (MonadPlus(mzero), forever)
-import Printer.ComputeMenuPrinter(printHelp, printDictionary, printComputeResult)
-import Printer.CommonPrinter(printWelcomeMessage, printExit, printBackExtraInfo, printParseError)
+import Printer.ComputeMenuPrinter(printHelp, printDictionary, printComputeResult, printNewWord)
+import Printer.CommonPrinter(printWelcomeMessage, printExit, printBackExtraInfo, printParseError, printClearItems)
 import Control.Monad.Trans.Maybe (MaybeT (runMaybeT))
 import Control.Monad.Trans.State.Lazy (execStateT)
 import Control.Monad.Trans.State (StateT, get, modify)
@@ -32,7 +32,9 @@ handleCommand :: Command -> StateT [String] (MaybeT IO) ()
 handleCommand Back = do
     lift . lift $ printBackExtraInfo "compute"
     mzero
-handleCommand (NewWord word) = modify (word :)
+handleCommand (NewWord word) = do 
+    modify (word :)
+    lift . lift $ printNewWord word
 handleCommand Compute = do
     env <- get
     laDict <- lift . lift $ getLaWordList
@@ -41,7 +43,9 @@ handleCommand Compute = do
         bestWord = findBestWord allPossibleWords env
         wordDiffList = getWordDiffListByWords bestWord env
     lift . lift $ printComputeResult bestWord (reverse wordDiffList)
-handleCommand Reset = modify (const [])
+handleCommand Reset = do 
+    modify (const [])
+    lift . lift $ printClearItems "words"
 handleCommand Status = do
     env <- get
     lift . lift $ printDictionary $ reverse env

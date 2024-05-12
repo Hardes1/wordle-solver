@@ -1,7 +1,8 @@
-module Printer.ComputeMenuPrinter(printHelp, printDictionary, printComputeResult) where
+module Printer.ComputeMenuPrinter(printHelp, printDictionary, printComputeResult, printNewWord) where
 import Data.Foldable (traverse_)
 import Data.GameState (WordDiff)
 import Printer.WordDiffPrinter (printWordDiffList)
+import Data.Char (toUpper)
 
 printHelp :: IO ()
 printHelp = do
@@ -22,3 +23,7 @@ printDictionary :: [String] -> IO ()
 printDictionary dict = do
     putStrLn "Current set of words in the dictionary is:"
     traverse_ putStrLn dict
+
+printNewWord :: String -> IO ()
+printNewWord word = do
+    putStrLn $ "New word was added to the dictionary: '" <> map toUpper word <> "'."
