@@ -32,9 +32,9 @@ parse input = do
   where
     combineWords = zipWith (\letter color
       -> (case toLower color of
-            'r' -> (Red, letter)
-            'y' -> (Yellow, letter)
-            'g' -> (Green, letter)
+            'r' -> (Red, toLower letter)
+            'y' -> (Yellow, toLower letter)
+            'g' -> (Green, toLower letter)
             _ -> error "Illegal state exception. Unexpected color"))
 
 
